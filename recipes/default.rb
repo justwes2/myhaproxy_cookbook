@@ -16,7 +16,7 @@
 #     "ssl_port" => 80
 #     }]
 
-all_web_nodes = search('node','role:web_server')
+all_web_nodes = search('node',"role:web_server AND chef_environment:#{node.chef_environment}")
 
 members = []
 
@@ -27,7 +27,7 @@ all_web_nodes.each do |web_node|
     'port' => 80,
     'ssl_port' => 80
   }
-  members.psu(member)
+  members.push(member)
 end
 
 node.default['haproxy']['members'] = members
